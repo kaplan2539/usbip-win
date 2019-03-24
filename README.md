@@ -14,7 +14,7 @@
 ### Build Tools
 - Visual Studio 2017 Community
 - Windows SDK 10.0.17134
-- Windows Driver Kit 10.0.17134
+- Windows Driver Kit 10.0.17763
 
 ### Build Process
 - Open usbip_win.sln
