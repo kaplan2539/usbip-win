@@ -116,6 +116,7 @@ vhci_QueryDeviceCaps_vpdo(pusbip_vpdo_dev_t vpdo, PIRP Irp)
 	// Set the capabilities.
 	//
 	if (deviceCapabilities->Version != 1 || deviceCapabilities->Size < sizeof(DEVICE_CAPABILITIES)) {
+		DBGW(DBG_PNP, "Invalid deviceCapabilities\n");
 		return STATUS_UNSUCCESSFUL;
 	}
 
@@ -474,8 +475,8 @@ vhci_QueryBusInformation_vpdo(__in pusbip_vpdo_dev_t vpdo, __in PIRP Irp)
 BOOLEAN USB_BUSIFFN
 IsDeviceHighSpeed(PVOID context)
 {
+	DBGI(DBG_GENERAL, "IsDeviceHighSpeed called\n");
 	pusbip_vpdo_dev_t	vpdo = context;
-	DBGI(DBG_GENERAL, "IsDeviceHighSpeed called, it is %d\n", vpdo->speed);
 	if (vpdo->speed == USB_SPEED_HIGH)
 		return TRUE;
 	return FALSE;
@@ -523,7 +524,7 @@ GetUSBDIVersion(IN PVOID context, IN OUT PUSBD_VERSION_INFORMATION inf, IN OUT P
 	DBGI(DBG_GENERAL, "GetUSBDIVersion called\n");
 
 	*HcdCapabilities = 0;
-	inf->USBDI_Version=0x500; /* Windows XP */
+	inf->USBDI_Version = 0x600; /* Windows 8 and above */
 	inf->Supported_USB_Version=0x200; /* USB 2.0 */
 }
 
@@ -614,6 +615,7 @@ vhci_pnp_vpdo(PDEVICE_OBJECT devobj, PIRP Irp, PIO_STACK_LOCATION IrpStack, pusb
 		status = IoRegisterDeviceInterface(devobj, &GUID_DEVINTERFACE_USB_DEVICE, NULL, &vpdo->usb_dev_interface);
 		if (status == STATUS_SUCCESS)
 			IoSetDeviceInterfaceState(&vpdo->usb_dev_interface, TRUE);
+		DBGI(DBG_GENERAL, "Device start status: %i\n", status);
 		break;
 	case IRP_MN_STOP_DEVICE:
 		// Here we shut down the device and give up and unmap any resources
@@ -760,7 +762,6 @@ vhci_pnp_vpdo(PDEVICE_OBJECT devobj, PIRP Irp, PIO_STACK_LOCATION IrpStack, pusb
 		// (if the device supports locking). Any driver that returns success
 		// for this IRP must wait until the device has been ejected before
 		// completing the IRP.
-
 		vpdo->Present = FALSE;
 
 		status = STATUS_SUCCESS;

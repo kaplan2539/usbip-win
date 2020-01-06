@@ -226,7 +226,7 @@ submit_urbr(pusbip_vpdo_dev_t vpdo, struct urb_req *urbr)
 	else {
 		vpdo->urbr_sent_partial = NULL;
 		KeReleaseSpinLock(&vpdo->lock_urbr, oldirql);
-
+		DBGI(DBG_URB, "submit_urbr: store_urbr failed\n");
 		status = STATUS_INVALID_PARAMETER;
 	}
 	DBGI(DBG_URB, "submit_urbr: urb requested: status:%s\n", dbg_ntstatus(status));

@@ -14,6 +14,8 @@
 
 struct urb_req {
 	pusbip_vpdo_dev_t	vpdo;
+	/* pipe handle for which the URBR is paired */
+	USBD_PIPE_HANDLE	pipe_handle;
 	PIRP	irp;
 	KEVENT	*event;
 	unsigned long	seq_num, seq_num_unlink;
@@ -31,5 +33,6 @@ submit_urbr(pusbip_vpdo_dev_t vpdo, struct urb_req *urbr);
 
 extern struct urb_req *
 create_urbr(pusbip_vpdo_dev_t vpdo, PIRP irp, unsigned long seq_num_unlink);
+
 extern void
 free_urbr(struct urb_req *urbr);
