@@ -10,7 +10,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run a one-line script
-      run: wdk-fix.ps1
+      run: |
+        Get-Location
+        wdk-fix.ps1
       shell: pwsh
     - name: Run a multi-line script
       run: |
