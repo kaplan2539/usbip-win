@@ -12,7 +12,7 @@ jobs:
     - name: Run a one-line script
       run: |
         Get-Location
-        wdk-fix.ps1
+        ./wdk-fix.ps1
       shell: pwsh
     - name: Run a multi-line script
       run: |
