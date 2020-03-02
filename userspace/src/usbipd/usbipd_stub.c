@@ -170,7 +170,7 @@ open_stub_dev(devno_t devno)
 
 	hdev = CreateFile(devpath, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, NULL);
 	if (hdev == INVALID_HANDLE_VALUE) {
-		err("%s: cannot open device: %s", __FUNCTION__, devpath);
+		err("%s: cannot open device: %s err: 0x%lx", __FUNCTION__, devpath, GetLastError());
         free(devpath);
 		return INVALID_HANDLE_VALUE;
 	}
