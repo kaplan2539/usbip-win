@@ -18,10 +18,11 @@ jobs:
       run: |
         cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\"
         .\MSBuild.exe $Env:GITHUB_WORKSPACE\usbip_win.sln
+        cd $Env:GITHUB_WORKSPACE
         mkdir usbip-win
         cp .\Debug\x64\usbip.exe usbip-win/
         cp .\Debug\x64\usbipd.exe usbip-win/
-        cp .\Debug\x64\usbip_stub.sys usbip-win/
+        cp .\Debug\x64\usbip_stub\usbip_stub.sys usbip-win/
         cp .\userspace\usb.ids usbip-win/
         cp .\driver\stub\usbip_stub.inx usbip-win/
     - uses: actions/upload-artifact@v1
