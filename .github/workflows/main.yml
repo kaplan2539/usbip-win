@@ -1,0 +1,30 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run a one-line script
+      run: |
+        Get-Location
+        ./wdk-fix.ps1
+      shell: pwsh
+    - name: Run a multi-line script
+      run: |
+        cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\"
+        .\MSBuild.exe $Env:GITHUB_WORKSPACE\usbip_win.sln
+        mkdir usbip-win
+        cp .\Debug\x64\usbip.exe usbip-win/
+        cp .\Debug\x64\usbipd.exe usbip-win/
+        cp .\Debug\x64\usbip_stub.sys usbip-win/
+        cp .\userspace\usb.ids usbip-win/
+        cp .\driver\stub\usbip_stub.inx usbip-win/
+    - uses: actions/upload-artifact@v1
+      with:
+        name: usbip-win
+        path: ./usbip-win
