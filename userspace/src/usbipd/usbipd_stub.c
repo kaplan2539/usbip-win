@@ -169,12 +169,12 @@ open_stub_dev(devno_t devno)
 	}
 
 	hdev = CreateFile(devpath, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, NULL);
-	free(devpath);
-
 	if (hdev == INVALID_HANDLE_VALUE) {
 		err("%s: cannot open device: %s", __FUNCTION__, devpath);
+        free(devpath);
 		return INVALID_HANDLE_VALUE;
 	}
+	free(devpath);
 
 	if (!DeviceIoControl(hdev, IOCTL_USBIP_STUB_EXPORT, NULL, 0, NULL, 0, &len, NULL)) {
 		err("%s: DeviceIoControl failed: err: 0x%lx", __FUNCTION__, GetLastError());
