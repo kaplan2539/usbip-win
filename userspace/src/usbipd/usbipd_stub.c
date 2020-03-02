@@ -68,7 +68,7 @@ get_devinfo(const char *devpath, ioctl_usbip_stub_devinfo_t *devinfo)
 
 	hdev = CreateFile(devpath, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, NULL);
 	if (hdev == INVALID_HANDLE_VALUE) {
-		err("get_devinfo: cannot open device: %s", devpath);
+		err("get_devinfo: cannot open device: %s %d", devpath, GetLastError() );
 		return FALSE;
 	}
 	if (!DeviceIoControl(hdev, IOCTL_USBIP_STUB_GET_DEVINFO, NULL, 0, devinfo, sizeof(ioctl_usbip_stub_devinfo_t), &len, NULL)) {
